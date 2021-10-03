@@ -3,6 +3,7 @@ package com.revature;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import com.revature.controllers.LoginController;
 import com.revature.controllers.ReimbursementController;
 import com.revature.utils.ConnectionUtil;
 
@@ -14,6 +15,7 @@ public class Launcher {
 
 		// HTTP Handlers
 		ReimbursementController rc = new ReimbursementController();
+		LoginController lc = new LoginController();
 		
 		// attempt to connect to the database
 		try(Connection conn = ConnectionUtil.getConnection()) {
@@ -33,10 +35,10 @@ public class Launcher {
 		
 		// --------------------------- Requests -----------------------------------
 		// Login (Employee/Manager)
-		// app.post("login", lc.loginHandler);
+		app.post("login", lc.loginHandler);
 		
-		// Submit Request (Employee)
-		// app.put("employee/submit", rc.submitRequestHandler);
+		// TODO Submit Request (Employee)
+		app.post("employee/submit", rc.e_submitRequestHandler);
 		
 		// View Pending Requests (Employee)
 		app.get("/employee/pending", rc.e_viewPendingRequestsHandler);
@@ -51,10 +53,10 @@ public class Launcher {
 		app.get("manager/history", rc.m_viewReimbursementHistoryHandler);
 		
 		// Approve Requests (Manager)
-		// app.patch("manager/requests/pending", rc.approveRequestHandler);
+		app.patch("manager/approve", rc.m_approveRequestHandler);
 		
-		// Deny Requests (Manager)
-		// app.patch("manager/requests/pending", rc.denyRequestHandler);
+		// TODO Deny Requests (Manager)
+		app.patch("manager/deny", rc.m_denyRequestHandler);
 
 	}
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.revature.models.Reimbursement;
+import com.revature.models.ReimbursementDTO;
+import com.revature.models.ReimbursementUpdateDTO;
 import com.revature.services.ReimbursementService;
 
 import io.javalin.http.Handler;
@@ -13,9 +15,6 @@ public class ReimbursementController {
 	ReimbursementService rs = new ReimbursementService();
 	
 	public Handler m_viewReimbursementHistoryHandler = (ctx) -> {
-		
-		// hard coded create session ========== REMOVE AFTER IMPLEMENTING LOGIN ===================
-		ctx.req.getSession();
 		
 		// check if there is a session
 		if(ctx.req.getSession(false) != null) {
@@ -42,8 +41,6 @@ public class ReimbursementController {
 	
 	public Handler m_viewPendingRequestsHandler = (ctx) -> {
 		
-		ctx.req.getSession();
-		
 		if(ctx.req.getSession(false) != null) {
 			
 			List<Reimbursement> reimbs = rs.m_getPendingReimbursements();
@@ -61,9 +58,49 @@ public class ReimbursementController {
 		}
 	};
 	
-	public Handler e_viewPendingRequestsHandler = (ctx) -> {
+	public Handler m_approveRequestHandler = (ctx) -> {
 		
-		ctx.req.getSession();
+		if(ctx.req.getSession(false) != null) {
+			
+			String body = ctx.body();
+			
+			Gson gson = new Gson();
+			
+			ReimbursementUpdateDTO rDto = gson.fromJson(body, ReimbursementUpdateDTO.class);
+			
+			rs.m_approveRequest(rDto);
+			
+			System.out.println("Request approved by manager!");
+			
+			ctx.status(200);
+		}
+		else {
+			ctx.status(403);
+		}
+	};
+	
+	public Handler m_denyRequestHandler = (ctx) -> {
+		
+		if(ctx.req.getSession(false) != null) {
+			
+			String body = ctx.body();
+			
+			Gson gson = new Gson();
+			
+			ReimbursementUpdateDTO rDto = gson.fromJson(body, ReimbursementUpdateDTO.class);
+			
+			rs.m_denyRequest(rDto);
+			
+			System.out.println("Request denied by manager!");
+			
+			ctx.status(200);
+		}
+		else {
+			ctx.status(403);
+		}
+	};
+	
+	public Handler e_viewPendingRequestsHandler = (ctx) -> {
 		
 		if(ctx.req.getSession(false) != null) {
 			
@@ -84,8 +121,6 @@ public class ReimbursementController {
 	
 	public Handler e_viewTicketHistoryHandler = (ctx) -> {
 		
-		ctx.req.getSession();
-		
 		if(ctx.req.getSession(false) != null) {
 			
 			List<Reimbursement> reimbs = rs.e_getTicketHistory();
@@ -95,6 +130,27 @@ public class ReimbursementController {
 			String JSONreimbs = gson.toJson(reimbs);
 			
 			ctx.result(JSONreimbs);
+			
+			ctx.status(200);
+		}
+		else {
+			ctx.status(403);
+		}
+	};
+	
+	public Handler e_submitRequestHandler = (ctx) -> {
+		
+		if(ctx.req.getSession(false) != null) {
+			
+			String body = ctx.body();
+			
+			Gson gson = new Gson();
+			
+			ReimbursementDTO rDto = gson.fromJson(body, ReimbursementDTO.class);
+			
+			rs.e_submitRequest(rDto);
+			
+			System.out.println("Request submitted by employee!");
 			
 			ctx.status(200);
 		}

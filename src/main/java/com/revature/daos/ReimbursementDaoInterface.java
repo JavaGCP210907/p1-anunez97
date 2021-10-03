@@ -3,6 +3,7 @@ package com.revature.daos;
 import java.util.List;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.ReimbursementUpdateDTO;
 
 public interface ReimbursementDaoInterface {
 	
@@ -12,9 +13,9 @@ public interface ReimbursementDaoInterface {
 	
 	public List<Reimbursement> m_getPendingReimbursements();        // get all pending reimbursements
 	
-	public void m_approveReimbursement(int id);                     // approve the pending reimbursement by id
+	public void m_approveReimbursement(ReimbursementUpdateDTO reimb, int id);                     // approve the pending reimbursement by id
 	
-	public void m_denyReimbursement(int id);                        // deny a pending reimbursement by id
+	public void m_denyReimbursement(ReimbursementUpdateDTO reimb, int id);                        // deny a pending reimbursement by id
 	
 	public List<Reimbursement> e_getPendingReimbursements(int id);  // get all pending requests by the employee's id
 	
