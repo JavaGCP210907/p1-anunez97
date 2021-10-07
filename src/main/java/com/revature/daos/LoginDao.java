@@ -5,13 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.revature.services.ReimbursementService;
 import com.revature.utils.ConnectionUtil;
 
 public class LoginDao implements LoginDaoInterface{
 
 	@Override
-	public boolean checkUsername(String username) {
+	public String getUserName(String username) {
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			
 			String sqlUser = "select ers_username from ers_users where ers_username = ?";
@@ -24,12 +23,10 @@ public class LoginDao implements LoginDaoInterface{
 			
 			// check if the username is in the database
 			if(!rs.next()) {
-				return false;
+				return "";
 			}
-			else if(rs.getString("ers_username").equals(username)) {
-				
-				return true;
-			}
+			
+			return rs.getString("ers_username");
 			
 		}
 		catch(SQLException e) {
@@ -37,11 +34,11 @@ public class LoginDao implements LoginDaoInterface{
 			e.printStackTrace();
 		}
 
-		return false; // return an empty string
+		return ""; // return an empty string
 	}
 
 	@Override
-	public boolean checkPassword(String username, String password) {
+	public String getPassword(String username) {
 		
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			
@@ -54,37 +51,117 @@ public class LoginDao implements LoginDaoInterface{
 			ResultSet rs = ps.executeQuery();
 			
 			if(!rs.next()) {
-				return false;
+				return "";
 			}
-			else if(rs.getString("ers_password").equals(password)) { // if the login will be a success
-				
-				String sql = "select ers_user_id from ers_users where ers_username = ?";
-				
-				ps = conn.prepareStatement(sql);
-				
-				ps.setString(1, username);
-				
-				rs = ps.executeQuery(); // get the user_id from the db
-				
-				rs.next(); // user exists so no need to check
-				
-				ReimbursementService.setCurrentUser(rs.getInt("ers_user_id")); // set the current user id in the reimbursement service
-				
-				return true;
-			}
+			
+			return rs.getString("ers_password");
 			
 		}
 		catch(SQLException e) {
-			System.out.println("Problem occurred wieh logining in");
+			System.out.println("Problem occurred with logging in");
 			e.printStackTrace();
 		}
 
-		return false;
+		return "";
 	}
 
 	@Override
-	public int getUserId() {
-		// TODO Auto-generated method stub
+	public String getFirstName(String username) {
+		
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select user_first_name from ers_users where ers_username = ?";
+		
+			PreparedStatement ps = conn.prepareStatement(sql);
+		
+			ps.setString(1, username);
+		
+			ResultSet rs = ps.executeQuery(); // get the user_first_name from the db
+		
+			rs.next(); // user exists so no need to check
+		
+			return rs.getString("user_first_name");
+		}
+		catch(SQLException e) {
+			System.out.println("Problem occurred with logging in");
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
+
+	@Override
+	public String getLastName(String username) {
+		
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select user_last_name from ers_users where ers_username = ?";
+		
+			PreparedStatement ps = conn.prepareStatement(sql);
+		
+			ps.setString(1, username);
+		
+			ResultSet rs = ps.executeQuery(); // get the user_first_name from the db
+		
+			rs.next(); // user exists so no need to check
+		
+			return rs.getString("user_last_name");
+		}
+		catch(SQLException e) {
+			System.out.println("Problem occurred with logging in");
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
+
+	@Override
+	public String getUserRole(String username) {
+		
+		// this will only get called when the username/password given are confirmed
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select user_role from ers_user_roles where ers_user_role_id = "
+					+ "(select user_role_id_fk from ers_users where ers_username = ?)";
+		
+			PreparedStatement ps = conn.prepareStatement(sql);
+		
+			ps.setString(1, username);
+		
+			ResultSet rs = ps.executeQuery(); // get the user_id from the db
+		
+			rs.next(); // user exists so no need to check
+			
+			return rs.getString("user_role");
+
+		}
+		catch(SQLException e) {
+			System.out.println("Problem occurred with logging in");
+			e.printStackTrace();
+		}
+		
+		return "";
+	}
+
+	@Override
+	public int getUserId(String username) {
+		// this will only get called when the username/password given are confirmed
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			String sql = "select ers_user_id from ers_users where ers_username = ?";
+				
+			PreparedStatement ps = conn.prepareStatement(sql);
+				
+			ps.setString(1, username);
+				
+			ResultSet rs = ps.executeQuery(); // get the user_id from the db
+				
+			rs.next(); // user exists so no need to check
+			
+			return rs.getInt("ers_user_id");
+
+		}
+		catch(SQLException e) {
+			System.out.println("Problem occurred with logging in");
+			e.printStackTrace();
+		}
+				
 		return 0;
 	}
 }

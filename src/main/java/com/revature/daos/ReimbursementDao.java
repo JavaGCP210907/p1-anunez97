@@ -34,11 +34,10 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			while(rs.next()) {
 				reimbs.add(new Reimbursement(
 						rs.getInt("reimb_id"),
-						rs.getInt("reimb_amount"),
+						rs.getDouble("reimb_amount"),
 						rs.getString("reimb_submitted"),
 						rs.getString("reimb_resolved"),
 						rs.getString("reimb_description"),
-						rs.getString("reimb_receipt"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
 						rs.getInt("reimb_status_id_fk"),
@@ -71,11 +70,10 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			while(rs.next()) {
 				reimbs.add(new Reimbursement(
 						rs.getInt("reimb_id"),
-						rs.getInt("reimb_amount"),
+						rs.getDouble("reimb_amount"),
 						rs.getString("reimb_submitted"),
 						rs.getString("reimb_resolved"),
 						rs.getString("reimb_description"),
-						rs.getString("reimb_receipt"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
 						rs.getInt("reimb_status_id_fk"),
@@ -112,11 +110,10 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			while(rs.next()) {
 				reimbs.add(new Reimbursement(
 						rs.getInt("reimb_id"),
-						rs.getInt("reimb_amount"),
+						rs.getDouble("reimb_amount"),
 						rs.getString("reimb_submitted"),
 						rs.getString("reimb_resolved"),
 						rs.getString("reimb_description"),
-						rs.getString("reimb_receipt"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
 						rs.getInt("reimb_status_id_fk"),
@@ -153,11 +150,10 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			while(rs.next()) {
 				reimbs.add(new Reimbursement(
 						rs.getInt("reimb_id"),
-						rs.getInt("reimb_amount"),
+						rs.getDouble("reimb_amount"),
 						rs.getString("reimb_submitted"),
 						rs.getString("reimb_resolved"),
 						rs.getString("reimb_description"),
-						rs.getString("reimb_receipt"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
 						rs.getInt("reimb_status_id_fk"),
@@ -181,8 +177,8 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			
 			// get all reimbs by employee
 			String sql = "insert into ers_reimbursements "
-					+ "(reimb_amount, reimb_submitted, reimb_description, reimb_receipt, reimb_author_fk, reimb_status_id_fk, reimb_type_id_fk)"
-					+ "values(?, ?, ?, ?, ?, ?, ?)";
+					+ "(reimb_amount, reimb_submitted, reimb_description, reimb_author_fk, reimb_status_id_fk, reimb_type_id_fk)"
+					+ "values(?, ?, ?, ?, ?, ?)";
 			
 			String pendingSql = "select reimb_status_id from ers_reimbursement_statuses where reimb_status = ?";
 			
@@ -201,13 +197,12 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			String currentDate = dateFormat.format(date); // will format our date based on the format we gave above
 			
 			// set the values for the reimbursement from the dto
-			ps.setInt(1, rDto.getReimb_amount());
+			ps.setDouble(1, rDto.getReimb_amount());
 			ps.setDate(2, java.sql.Date.valueOf(currentDate));
 			ps.setString(3, rDto.getReimb_description());
-			ps.setInt(5, id);
-			ps.setString(4, "receipt placeholder");
-			ps.setInt(6, rs.getInt("reimb_status_id"));
-			ps.setInt(7, rDto.getReimb_type_id_fk());
+			ps.setInt(4, id);
+			ps.setInt(5, rs.getInt("reimb_status_id"));
+			ps.setInt(6, rDto.getReimb_type_id_fk());
 			
 			// execute the insert query
 			ps.executeUpdate();

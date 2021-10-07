@@ -25,12 +25,19 @@ public class LoginController {
 			
 			ctx.status(200);
 			
-			ctx.result("Login successful!");
+			String gsonUser = gson.toJson(ls.getUserData());
+			
+			ctx.result(gsonUser);
 			
 			System.out.println("Logged in as " + LDTO.getUsername());
 		}
 		else {
 			ctx.status(403);
 		}
+	};
+	
+	public Handler logoutHandler = (ctx) -> {
+		System.out.println(ctx.body());
+		ctx.req.getSession().invalidate();
 	};
 }

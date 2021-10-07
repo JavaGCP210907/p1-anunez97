@@ -37,11 +37,14 @@ public class Launcher {
 		// Login (Employee/Manager)
 		app.post("login", lc.loginHandler);
 		
+		// Logout
+		app.post("logout", lc.logoutHandler);
+		
 		// TODO Submit Request (Employee)
 		app.post("employee/submit", rc.e_submitRequestHandler);
 		
 		// View Pending Requests (Employee)
-		app.get("/employee/pending", rc.e_viewPendingRequestsHandler);
+		app.get("employee/pending", rc.e_viewPendingRequestsHandler);
 		
 		// View Past Tickets (Employee)
 		app.get("employee/history", rc.e_viewTicketHistoryHandler);

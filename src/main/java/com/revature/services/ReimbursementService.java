@@ -36,7 +36,7 @@ public class ReimbursementService {
 		
 		// TODO same as above
 		System.out.println("Getting employee request history");
-		return rDao.e_getTicketHistory(1);
+		return rDao.e_getTicketHistory(user_id);
 	}
 
 	public void e_submitRequest(ReimbursementDTO reimb) {

@@ -2,7 +2,7 @@ package com.revature.models;
 
 public class ReimbursementDTO {
 
-	private int reimb_amount;
+	private double reimb_amount;
 	private String reimb_description;
 	private int reimb_type_id_fk;
 	
@@ -11,14 +11,14 @@ public class ReimbursementDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReimbursementDTO(int reimb_amount, String reimb_description, int reimb_type_id_fk) {
+	public ReimbursementDTO(double reimb_amount, String reimb_description, int reimb_type_id_fk) {
 		super();
 		this.reimb_amount = reimb_amount;
 		this.reimb_description = reimb_description;
 		this.reimb_type_id_fk = reimb_type_id_fk;
 	}
 
-	public int getReimb_amount() {
+	public double getReimb_amount() {
 		return reimb_amount;
 	}
 
