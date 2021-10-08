@@ -17,11 +17,6 @@ public class ConnectionUtil {
 			e.printStackTrace();
 		}
 		
-		// login credentials for the database
-		String url = "jdbc:postgresql://localhost:5432/postgres?currentSchema=p1_ers";
-		String username = "postgres";
-		String password = "t4coss1212";
-		
-		return DriverManager.getConnection(url, username, password);
+		return DriverManager.getConnection(System.getenv("url_p1"), System.getenv("username"), System.getenv("password"));
 	}
 }
