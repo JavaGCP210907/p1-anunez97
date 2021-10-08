@@ -23,7 +23,16 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			
-			String sql = "select * from ers_reimbursements";
+			String sql = "select ers_reimbursements.reimb_id, ers_reimbursements.reimb_amount, ers_reimbursements.reimb_submitted, "
+					+ "ers_reimbursements.reimb_resolved, "
+					+ "ers_reimbursements.reimb_description, ers_reimbursements.reimb_author_fk, ers_reimbursements.reimb_resolver_fk, "
+					+ "ers_reimbursement_statuses.reimb_status, ers_reimbursement_types.reimb_type "
+					+ "from ers_reimbursements "
+					+ "left join ers_reimbursement_statuses "
+					+ "on ers_reimbursements.reimb_status_id_fk = ers_reimbursement_statuses.reimb_status_id "
+					+ "left join ers_reimbursement_types "
+					+ "on ers_reimbursements.reimb_type_id_fk = ers_reimbursement_types.reimb_type_id "
+					+ "order by ers_reimbursements.reimb_id";
 			
 			Statement s = conn.createStatement();
 			
@@ -40,8 +49,8 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 						rs.getString("reimb_description"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
-						rs.getInt("reimb_status_id_fk"),
-						rs.getInt("reimb_type_id_fk")
+						rs.getString("reimb_status"),
+						rs.getString("reimb_type")
 						));
 			}
 			
@@ -59,7 +68,17 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 	public List<Reimbursement> m_getPendingReimbursements() {
 			try(Connection conn = ConnectionUtil.getConnection()) {
 			
-			String sql = "select * from ers_reimbursements where reimb_status_id_fk = 1";
+			String sql = "select ers_reimbursements.reimb_id, ers_reimbursements.reimb_amount, ers_reimbursements.reimb_submitted, "
+					+ "ers_reimbursements.reimb_resolved, "
+					+ "ers_reimbursements.reimb_description, ers_reimbursements.reimb_author_fk, ers_reimbursements.reimb_resolver_fk, "
+					+ "ers_reimbursement_statuses.reimb_status, ers_reimbursement_types.reimb_type "
+					+ "from ers_reimbursements "
+					+ "left join ers_reimbursement_statuses "
+					+ "on ers_reimbursements.reimb_status_id_fk = ers_reimbursement_statuses.reimb_status_id "
+					+ "left join ers_reimbursement_types "
+					+ "on ers_reimbursements.reimb_type_id_fk = ers_reimbursement_types.reimb_type_id "
+					+ "where ers_reimbursements.reimb_status_id_fk = 1"
+					+ "order by ers_reimbursements.reimb_id";
 			
 			Statement s = conn.createStatement();
 			
@@ -76,8 +95,8 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 						rs.getString("reimb_description"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
-						rs.getInt("reimb_status_id_fk"),
-						rs.getInt("reimb_type_id_fk")
+						rs.getString("reimb_status"),
+						rs.getString("reimb_type")
 						));
 			}
 			
@@ -97,7 +116,18 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			
 			// get all pending requests from employee
-			String sql = "select * from ers_reimbursements where reimb_status_id_fk = 1 and reimb_author_fk = ?"; 
+			String sql = "select ers_reimbursements.reimb_id, ers_reimbursements.reimb_amount, ers_reimbursements.reimb_submitted, "
+					+ "ers_reimbursements.reimb_resolved, "
+					+ "ers_reimbursements.reimb_description, ers_reimbursements.reimb_author_fk, ers_reimbursements.reimb_resolver_fk, "
+					+ "ers_reimbursement_statuses.reimb_status, ers_reimbursement_types.reimb_type "
+					+ "from ers_reimbursements "
+					+ "left join ers_reimbursement_statuses "
+					+ "on ers_reimbursements.reimb_status_id_fk = ers_reimbursement_statuses.reimb_status_id "
+					+ "left join ers_reimbursement_types "
+					+ "on ers_reimbursements.reimb_type_id_fk = ers_reimbursement_types.reimb_type_id "
+					+ "where ers_reimbursements.reimb_status_id_fk = 1"
+					+ "and ers_reimbursements.reimb_author_fk = ?"
+					+ "order by ers_reimbursements.reimb_id";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -116,8 +146,8 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 						rs.getString("reimb_description"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
-						rs.getInt("reimb_status_id_fk"),
-						rs.getInt("reimb_type_id_fk")
+						rs.getString("reimb_status"),
+						rs.getString("reimb_type")
 						));
 			}
 			
@@ -137,7 +167,17 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 		try(Connection conn = ConnectionUtil.getConnection()) {
 			
 			// get all reimbs by employee
-			String sql = "select * from ers_reimbursements where reimb_author_fk = ?";
+			String sql = "select ers_reimbursements.reimb_id, ers_reimbursements.reimb_amount, ers_reimbursements.reimb_submitted, "
+					+ "ers_reimbursements.reimb_resolved, "
+					+ "ers_reimbursements.reimb_description, ers_reimbursements.reimb_author_fk, ers_reimbursements.reimb_resolver_fk, "
+					+ "ers_reimbursement_statuses.reimb_status, ers_reimbursement_types.reimb_type "
+					+ "from ers_reimbursements "
+					+ "left join ers_reimbursement_statuses "
+					+ "on ers_reimbursements.reimb_status_id_fk = ers_reimbursement_statuses.reimb_status_id "
+					+ "left join ers_reimbursement_types "
+					+ "on ers_reimbursements.reimb_type_id_fk = ers_reimbursement_types.reimb_type_id "
+					+ "where ers_reimbursements.reimb_author_fk = ?"
+					+ "order by ers_reimbursements.reimb_id";
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
@@ -156,8 +196,8 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 						rs.getString("reimb_description"),
 						rs.getInt("reimb_author_fk"),
 						rs.getInt("reimb_resolver_fk"),
-						rs.getInt("reimb_status_id_fk"),
-						rs.getInt("reimb_type_id_fk")
+						rs.getString("reimb_status"),
+						rs.getString("reimb_type")
 						));
 			}
 			
@@ -272,6 +312,59 @@ public class ReimbursementDao implements ReimbursementDaoInterface {
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public int getRequestId(int id) {
+		
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			
+			// get all reimbs by employee
+			String sql = "select reimb_id from ers_reimbursements where reimb_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next()) {
+				return rs.getInt("reimb_id");
+			}
+		}
+		catch(SQLException e) {
+			System.out.println("Problem occured when viewing ticket history!");
+			e.printStackTrace();
+		}
+		
+		return -1;
+	}
+
+	// will only be called when the request is confirmed
+	@Override
+	public int getRequestStatus(int id) {
+		
+		try(Connection conn = ConnectionUtil.getConnection()) {
+			
+			// get all reimbs by employee
+			String sql = "select reimb_status_id_fk from ers_reimbursements where reimb_id = ?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			rs.next();
+			
+			return rs.getInt("reimb_status_id_fk");
+		}
+		catch(SQLException e) {
+			System.out.println("Problem occured when viewing ticket history!");
+			e.printStackTrace();
+		}
+		
+		return -1;
 	}
 
 }

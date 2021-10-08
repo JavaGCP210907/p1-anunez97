@@ -20,4 +20,8 @@ public interface ReimbursementDaoInterface {
 	public List<Reimbursement> e_getPendingReimbursements(int id);  // get all pending requests by the employee's id
 	
 	public List<Reimbursement> e_getTicketHistory(int id);          // get employee ticket history  
+	
+	public int getRequestId(int id);
+	
+	public int getRequestStatus(int id);
 }
