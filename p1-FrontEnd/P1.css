@@ -1,0 +1,27 @@
+#employee-options {
+    display: none;
+}
+
+#manager-options {
+    display: none;
+}
+
+#submit-form {
+    display: none;
+}
+
+#approve-request {
+    display: none;
+}
+
+#deny-request {
+    display: none;
+}
+
+#reimbursement-table {
+    display: none;
+}
+
+#logout-btn {
+    display: none;
+}
